@@ -25,13 +25,12 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(initialFlagsConfig, {
-        __id: "marvin",
-      });
+      const engine = createFlagEngine(initialFlagsConfig);
+      const userCtx = engine.createUserContext({ __id: "marvin" });
 
-      expect(machine.evaluate("new-homepage")).toEqual(true);
-      machine.setUserConfiguration({ __id: "yo" });
-      expect(machine.evaluate("new-homepage")).toEqual(false);
+      expect(userCtx.evaluate("new-homepage")).toEqual(true);
+      userCtx.setUserConfiguration({ __id: "yo" });
+      expect(userCtx.evaluate("new-homepage")).toEqual(false);
     });
   });
 
@@ -45,8 +44,9 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, { __id: "yo" });
-      expect(machine.evaluate("does-not-exist")).toEqual(false);
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({ __id: "yo" });
+      expect(userCtx.evaluate("does-not-exist")).toEqual(false);
     });
 
     it("returns false when the flag is disabled", () => {
@@ -58,8 +58,9 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, { __id: "yo" });
-      expect(machine.evaluate("new-homepage")).toEqual(false);
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({ __id: "yo" });
+      expect(userCtx.evaluate("new-homepage")).toEqual(false);
     });
 
     it("returns true when the flag is enabled with no strategies", () => {
@@ -71,8 +72,9 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, { __id: "yo" });
-      expect(machine.evaluate("new-homepage")).toEqual(true);
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({ __id: "yo" });
+      expect(userCtx.evaluate("new-homepage")).toEqual(true);
     });
   });
 
@@ -86,8 +88,9 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, { __id: "yo" });
-      expect(machine.evaluateAll()).toEqual({ "new-homepage": false });
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({ __id: "yo" });
+      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": false });
     });
 
     it("returns true when the flag is enabled with no strategies", () => {
@@ -99,8 +102,9 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, { __id: "yo" });
-      expect(machine.evaluateAll()).toEqual({ "new-homepage": true });
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({ __id: "yo" });
+      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": true });
     });
 
     it("returns true when the flag is enabled when at least one strategy is fulfilled", () => {
@@ -140,14 +144,15 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, {
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({
         __id: "yo",
         firstName: "marvin",
         lastName: "frachet",
         country: "FR",
       });
 
-      expect(machine.evaluateAll()).toEqual({ "new-homepage": true });
+      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": true });
     });
 
     it("returns false when the flag is enabled and match no strategy", () => {
@@ -187,12 +192,13 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, {
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({
         __id: "yo",
         notMatching: "hello",
       });
 
-      expect(machine.evaluateAll()).toEqual({ "new-homepage": false });
+      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": false });
     });
 
     it("returns 'Control' variant when the flag is enabled and with __id being 'A'", () => {
@@ -219,12 +225,13 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, {
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({
         __id: "A",
         notMatching: "hello",
       });
 
-      expect(machine.evaluateAll()).toEqual({ "new-homepage": "Control" });
+      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": "Control" });
     });
 
     it("returns 'B' variant when the flag is enabled and with __id being 'yo'", () => {
@@ -251,12 +258,13 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, {
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({
         __id: "yo",
         notMatching: "hello",
       });
 
-      expect(machine.evaluateAll()).toEqual({ "new-homepage": "B" });
+      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": "B" });
     });
 
     it("resolves the variants 'Control' of the matching strategy for the __id 'A'", () => {
@@ -314,14 +322,15 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, {
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({
         __id: "A",
         firstName: "marvin",
         lastName: "frachet",
         country: "FR",
       });
 
-      expect(machine.evaluateAll()).toEqual({ "new-homepage": "Control" });
+      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": "Control" });
     });
 
     it("resolves the variants 'B' of the matching strategy for the __id 'yo'", () => {
@@ -379,14 +388,15 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, {
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({
         __id: "yo",
         firstName: "marvin",
         lastName: "frachet",
         country: "FR",
       });
 
-      expect(machine.evaluateAll()).toEqual({ "new-homepage": "B" });
+      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": "B" });
     });
 
     it("returns false when the variant are not configured correctly", () => {
@@ -438,14 +448,15 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, {
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({
         __id: "yo",
         firstName: "marvin",
         lastName: "frachet",
         country: "FR",
       });
 
-      expect(machine.evaluateAll()).toEqual({ "new-homepage": false });
+      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": false });
     });
 
     it("returns true when the user is in the segment", () => {
@@ -476,14 +487,15 @@ describe("api", () => {
         },
       ];
 
-      const machine = createFlagEngine(flagsConfig, {
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({
         __id: "yo",
         firstName: "marvin",
         lastName: "frachet",
         country: "FR",
       });
 
-      expect(machine.evaluateAll()).toEqual({ "new-homepage": true });
+      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": true });
     });
   });
 
@@ -517,12 +529,13 @@ describe("api", () => {
           ],
         },
       ];
-      const machine = createFlagEngine(flagsConfig, {
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({
         __id: "b",
         country: "France",
       });
 
-      expect(machine.evaluateAll()).toEqual({ "feature-flag-key": "B" });
+      expect(userCtx.evaluateAll()).toEqual({ "feature-flag-key": "B" });
     });
   });
 });

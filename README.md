@@ -3,11 +3,11 @@
 <br/>
 
 Demo [React Native (Snack)](https://snack.expo.dev/@mfrachet/flag-engine-example) | [Client Side](https://stackblitz.com/edit/vitejs-vite-a8kiur?file=main.js) | [Server Side](https://stackblitz.com/edit/stackblitz-starters-jfhzjq?file=index.js)
+
 </div>
 <br/>
 
 ![20 pixelized boats on the sea](https://github.com/user-attachments/assets/5628ad4c-6e77-4f5c-9e81-2bc5f14b5d51)
-
 
 ---
 
@@ -34,7 +34,11 @@ $ pnpm add @flag-engine/core
 2. Create a configuration (or build it from where it makes sense for you like a DB or a static file, or whatever)
 
 ```typescript
-import { createFlagEngine, FlagsConfiguration, UserConfiguration } from "@flag-engine/core";
+import {
+  createFlagEngine,
+  FlagsConfiguration,
+  UserConfiguration,
+} from "@flag-engine/core";
 
 const flagsConfig: FlagsConfiguration = [
   {
@@ -50,13 +54,14 @@ const userConfiguration: UserConfiguration = {
   __id: "73a56693-0f83-4ffc-a61d-7c95fdf68693", // a unique identifier for the user or an empty string if the users are not connected.
 };
 
-const engine = createFlagEngine(flagsConfig, userConfiguration);
+const engine = createFlagEngine(flagsConfig);
+const userCtx = engine.createUserContext(userConfiguration);
 
 // Evaluate one specific feature flag
-const isFlagEnabled = engine.evaluate("feature-flag-key"); // true
+const isFlagEnabled = userCtx.evaluate("feature-flag-key"); // true
 
 // Evaluate all the feature flags at once
-const allFlags = engine.evaluateAll(); // { "feature-flag-key": true }
+const allFlags = userCtx.evaluateAll(); // { "feature-flag-key": true }
 ```
 
 ## Concepts
@@ -133,12 +138,13 @@ const flagsConfig: FlagsConfiguration = [
   },
 ];
 
-const machine = createFlagEngine(flagsConfig, {
+const engine = createFlagEngine(flagsConfig);
+const userCtx = engine.createUserContext({
   __id: "b",
   country: "France",
 });
 
-const variant = machine.evaluate("feature-flag-key"); // gives back B
+const variant = userCtx.evaluate("feature-flag-key"); // gives back B
 ```
 
 Now, I suggest you give it a try, build your config object the way you prefer and start building stuff!

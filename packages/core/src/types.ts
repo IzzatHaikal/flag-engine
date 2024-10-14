@@ -55,8 +55,14 @@ export type FlagsConfiguration = Array<FlagConfiguration>;
 
 export type FlagDict = Record<string, string | boolean>;
 
-export interface EvaluationMachine {
+export interface UserContextFlagEvaluation {
   evaluateAll: () => FlagDict;
   evaluate: (flagKey: string) => string | boolean;
   setUserConfiguration: (newUserConfiguration: UserConfiguration) => void;
+}
+
+export interface EvaluationMachine {
+  createUserContext: (
+    userConfiguration: UserConfiguration
+  ) => UserContextFlagEvaluation;
 }

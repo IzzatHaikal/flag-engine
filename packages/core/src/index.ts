@@ -6,10 +6,10 @@ import {
   UserConfiguration,
 } from "./types";
 
-export const createFlagEngine = (
+const createUserContext = (
   flagsConfig: FlagsConfiguration,
   userConfiguration: UserConfiguration
-): EvaluationMachine => {
+) => {
   let _userConfiguration: UserConfiguration = userConfiguration;
 
   const evaluate = (flagKey: string) => {
@@ -38,4 +38,13 @@ export const createFlagEngine = (
   };
 
   return { evaluateAll, evaluate, setUserConfiguration };
+};
+
+export const createFlagEngine = (
+  flagsConfig: FlagsConfiguration
+): EvaluationMachine => {
+  return {
+    createUserContext: (userConfiguration: UserConfiguration) =>
+      createUserContext(flagsConfig, userConfiguration),
+  };
 };
