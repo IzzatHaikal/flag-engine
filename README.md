@@ -1,4 +1,9 @@
-<div align="center">⛵ A feature flags evaluation engine, runtime agnostic with no remote services.</div>
+<div align="center">⛵ A feature flags evaluation engine, runtime agnostic with no remote services.
+<br/>
+<br/>
+
+Demo [React Native (Snack)](https://snack.expo.dev/@mfrachet/flag-engine-example) | [Client Side](https://stackblitz.com/edit/vitejs-vite-a8kiur?file=main.js) | [Server Side](https://stackblitz.com/edit/stackblitz-starters-jfhzjq?file=index.js)
+</div>
 <br/>
 
 ![20 pixelized boats on the sea](https://github.com/user-attachments/assets/5628ad4c-6e77-4f5c-9e81-2bc5f14b5d51)
