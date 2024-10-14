@@ -29,7 +29,7 @@ $ pnpm add @flag-engine/core
 2. Create a configuration (or build it from where it makes sense for you like a DB or a static file, or whatever)
 
 ```typescript
-import { createFlagEngine } from "@flag-engine/core";
+import { createFlagEngine, FlagsConfiguration, UserConfiguration } from "@flag-engine/core";
 
 const flagsConfig: FlagsConfiguration = [
   {
