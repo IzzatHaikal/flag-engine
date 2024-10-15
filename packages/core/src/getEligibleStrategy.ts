@@ -1,9 +1,11 @@
 import { FlagConfiguration, Rule, UserConfiguration } from "./types";
 
-const isNumber = (value: unknown): value is number => typeof value === "number";
 const isString = (value: unknown): value is string => typeof value === "string";
 
-const isEligibleForStrategy = (
+const isUndefined = (value: unknown): value is undefined =>
+  typeof value === "undefined" || value === null;
+
+export const isEligibleForStrategy = (
   rules: Rule[],
   userConfiguration: UserConfiguration
 ): boolean => {
@@ -24,21 +26,17 @@ const isEligibleForStrategy = (
       case "greater_than": {
         const fieldValue = userConfiguration[rule.field];
 
-        return (
-          isNumber(fieldValue) &&
-          isNumber(rule.value) &&
-          fieldValue > rule.value
-        );
+        if (isUndefined(fieldValue) || isUndefined(rule.value)) return false;
+
+        return fieldValue! > rule.value!;
       }
 
       case "less_than": {
         const fieldValue = userConfiguration[rule.field];
 
-        return (
-          isNumber(fieldValue) &&
-          isNumber(rule.value) &&
-          fieldValue < rule.value
-        );
+        if (isUndefined(fieldValue) || isUndefined(rule.value)) return false;
+
+        return fieldValue! < rule.value!;
       }
 
       case "contains": {
@@ -64,7 +62,17 @@ const isEligibleForStrategy = (
       case "in": {
         const fieldValue = userConfiguration[rule.field];
 
-        return Array.isArray(rule.value) && rule.value.includes(fieldValue);
+        return (
+          Array.isArray(rule.value) && rule.value.indexOf(fieldValue) !== -1
+        );
+      }
+
+      case "not_in": {
+        const fieldValue = userConfiguration[rule.field];
+
+        return (
+          Array.isArray(rule.value) && rule.value.indexOf(fieldValue) === -1
+        );
       }
 
       default:
