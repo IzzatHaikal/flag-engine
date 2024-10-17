@@ -201,7 +201,40 @@ describe("api", () => {
       expect(userCtx.evaluateAll()).toEqual({ "new-homepage": false });
     });
 
-    it("returns 'Control' variant when the flag is enabled and with __id being 'A'", () => {
+    it("returns 'Control' variant when the flag is enabled and with __id being 'Ab'", () => {
+      const flagsConfig: FlagsConfiguration = [
+        {
+          key: "new-homepage",
+          status: "enabled",
+          strategies: [
+            {
+              name: "default",
+              rules: [],
+              variants: [
+                {
+                  name: "Control",
+                  percent: 90,
+                },
+                {
+                  name: "B",
+                  percent: 10,
+                },
+              ],
+            },
+          ],
+        },
+      ];
+
+      const engine = createFlagEngine(flagsConfig);
+      const userCtx = engine.createUserContext({
+        __id: "Ab",
+        notMatching: "hello",
+      });
+
+      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": "Control" });
+    });
+
+    it("returns 'B' variant when the flag is enabled and with __id being 'A'", () => {
       const flagsConfig: FlagsConfiguration = [
         {
           key: "new-homepage",
@@ -231,43 +264,10 @@ describe("api", () => {
         notMatching: "hello",
       });
 
-      expect(userCtx.evaluateAll()).toEqual({ "new-homepage": "Control" });
-    });
-
-    it("returns 'B' variant when the flag is enabled and with __id being 'yo'", () => {
-      const flagsConfig: FlagsConfiguration = [
-        {
-          key: "new-homepage",
-          status: "enabled",
-          strategies: [
-            {
-              name: "default",
-              rules: [],
-              variants: [
-                {
-                  name: "Control",
-                  percent: 90,
-                },
-                {
-                  name: "B",
-                  percent: 10,
-                },
-              ],
-            },
-          ],
-        },
-      ];
-
-      const engine = createFlagEngine(flagsConfig);
-      const userCtx = engine.createUserContext({
-        __id: "a,",
-        notMatching: "hello",
-      });
-
       expect(userCtx.evaluateAll()).toEqual({ "new-homepage": "B" });
     });
 
-    it("resolves the variants 'Control' of the matching strategy for the __id 'A'", () => {
+    it("resolves the variants 'Control' of the matching strategy for the __id 'a,'", () => {
       const flagsConfig: FlagsConfiguration = [
         {
           key: "new-homepage",
@@ -324,7 +324,7 @@ describe("api", () => {
 
       const engine = createFlagEngine(flagsConfig);
       const userCtx = engine.createUserContext({
-        __id: "A",
+        __id: "a,",
         firstName: "marvin",
         lastName: "frachet",
         country: "FR",
@@ -333,7 +333,7 @@ describe("api", () => {
       expect(userCtx.evaluateAll()).toEqual({ "new-homepage": "Control" });
     });
 
-    it("resolves the variants 'B' of the matching strategy for the __id 'yo'", () => {
+    it("resolves the variants 'B' of the matching strategy for the __id 'A'", () => {
       const flagsConfig: FlagsConfiguration = [
         {
           key: "new-homepage",
@@ -390,7 +390,7 @@ describe("api", () => {
 
       const engine = createFlagEngine(flagsConfig);
       const userCtx = engine.createUserContext({
-        __id: "a,",
+        __id: "A",
         firstName: "marvin",
         lastName: "frachet",
         country: "FR",
@@ -531,7 +531,7 @@ describe("api", () => {
       ];
       const engine = createFlagEngine(flagsConfig);
       const userCtx = engine.createUserContext({
-        __id: "b",
+        __id: "a",
         country: "France",
       });
 
