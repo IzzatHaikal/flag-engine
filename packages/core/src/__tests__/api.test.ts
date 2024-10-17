@@ -260,7 +260,7 @@ describe("api", () => {
 
       const engine = createFlagEngine(flagsConfig);
       const userCtx = engine.createUserContext({
-        __id: "yo",
+        __id: "a,",
         notMatching: "hello",
       });
 
@@ -390,7 +390,7 @@ describe("api", () => {
 
       const engine = createFlagEngine(flagsConfig);
       const userCtx = engine.createUserContext({
-        __id: "yo",
+        __id: "a,",
         firstName: "marvin",
         lastName: "frachet",
         country: "FR",

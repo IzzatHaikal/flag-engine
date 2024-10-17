@@ -9,8 +9,7 @@ export const resolveStrategyVariant = (strategy: Strategy, userKey: string) => {
   let cumulative = 0;
 
   const variant = strategy.variants.find((variant) => {
-    const evaluationKey = `${variant.name}-${userKey}`;
-    const hash = murmur3(evaluationKey);
+    const hash = murmur3(userKey);
     const userFlagPercentage = (hash / MAX_INT_32) * 100;
 
     cumulative += variant.percent;
