@@ -41,8 +41,8 @@ describe("repartition", () => {
     }
 
     const halfCount = COUNT / 2;
-    const halfCountUpper = halfCount * 1.01;
-    const halfCountLower = halfCount * 0.99;
+    const halfCountUpper = halfCount * 1.001;
+    const halfCountLower = halfCount * 0.999;
 
     expect(A).toBeGreaterThan(halfCountLower);
     expect(A).toBeLessThan(halfCountUpper);
