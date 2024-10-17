@@ -49,4 +49,29 @@ describe("repartition", () => {
     expect(B).toBeGreaterThan(halfCountLower);
     expect(B).toBeLessThan(halfCountUpper);
   });
+
+  it("should be distributive", () => {
+    const COUNT = 10_000_000;
+    let A = 0;
+    let B = 0;
+
+    for (let i = 0; i < COUNT; i++) {
+      const userCtx = engine.createUserContext({ __id: `user-${i}` });
+      const variant = userCtx.evaluate("summer-sale");
+      if (variant === "A") {
+        A++;
+      } else if (variant === "B") {
+        B++;
+      }
+    }
+
+    const halfCount = COUNT / 2;
+    const halfCountUpper = halfCount * 1.0003;
+    const halfCountLower = halfCount * 0.9997;
+
+    expect(A).toBeGreaterThan(halfCountLower);
+    expect(A).toBeLessThan(halfCountUpper);
+    expect(B).toBeGreaterThan(halfCountLower);
+    expect(B).toBeLessThan(halfCountUpper);
+  });
 });
