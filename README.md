@@ -2,7 +2,7 @@
 <br/>
 <br/>
 
-Demo [Nexjts](https://codesandbox.io/p/devbox/7tjw9s) | [React Native (Snack)](https://snack.expo.dev/@mfrachet/flag-engine-example) | [Client Side](https://stackblitz.com/edit/vitejs-vite-a8kiur?file=main.js) | [Server Side](https://stackblitz.com/edit/stackblitz-starters-jfhzjq?file=index.js)
+Demo [NextJs](https://codesandbox.io/p/devbox/7tjw9s) | [React Native (Snack)](https://snack.expo.dev/@mfrachet/flag-engine-example) | [Client Side](https://stackblitz.com/edit/vitejs-vite-a8kiur?file=main.js) | [Server Side](https://stackblitz.com/edit/stackblitz-starters-jfhzjq?file=index.js)
 
 </div>
 <br/>
